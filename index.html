@@ -1940,9 +1940,10 @@ function buildScriptUrl(extraParams) {
   const base = LS.get('rb_script');
   if (!base) return null;
   const token = LS.get('rb_api_token') || '';
-  const params = token ? `token=${encodeURIComponent(token)}` : '';
-  const extra  = extraParams ? '&' + extraParams : '';
-  return base + '?' + params + extra;
+  const parts = [];
+  if (token)      parts.push('token=' + encodeURIComponent(token));
+  if (extraParams) parts.push(extraParams);
+  return base + (parts.length ? '?' + parts.join('&') : '');
 }
 
 async function testAndSaveScriptUrl() {
